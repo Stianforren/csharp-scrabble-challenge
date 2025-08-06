@@ -14,8 +14,6 @@ namespace csharp_scrabble_challenge.Main
     {
 
         private Dictionary<char, int> charScore = new Dictionary<char, int>();
-        private Dictionary<char, char> bracketPair = new Dictionary<char, char> { { '{', '}' }, { '[', ']'} };
-        private List<char> legalBrackets = new List<char> { '{', '}', '[', ']' };
         private string _word;
         private int _mulitplier = 1;
 
@@ -65,11 +63,6 @@ namespace csharp_scrabble_challenge.Main
 
                 foreach (char ch in subString)
                 {
-                    //if (ch == '{') { _mulitplier += 1; open++; }
-                    //else if(ch == '}') { if (_mulitplier > 1) { _mulitplier -= 1; } close++; }
-                    //else if (ch == '[') { _mulitplier += 2; open++; }
-                    //else if (ch == ']') { if (_mulitplier > 2) { _mulitplier -= 2; } close++; }
-
                     if (ch == '{')
                     {
                         if (currentOpenBracket == ' ') { _mulitplier += 1; currentOpenBracket = '{'; }
@@ -98,9 +91,6 @@ namespace csharp_scrabble_challenge.Main
             return finalScore * _wordMultiplier;
 
         }
-
-
-
         private bool checkLegalWord(string word)
         {
             foreach (char ch in word)
@@ -145,8 +135,5 @@ namespace csharp_scrabble_challenge.Main
             charScore.Add('[', 0);
             charScore.Add(']', 0);
         }     
-
-
-        
     }
 }
