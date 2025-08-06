@@ -19,6 +19,9 @@ namespace csharp_scrabble_challenge.Test
 
         [TestCase("[{h}o1s{e}]", 0)] // error case (zero for errors)
         [TestCase("{h}ous{e}", 13)]
+        [TestCase("{h}{{ous{e}", 0)]
+        [TestCase("{h}}ous{e}", 0)]
+        [TestCase("{h}{o]us{e}", 0)]
         [TestCase("[{h}ous{e}]", 39)]
         [TestCase("[h}ous{e}]", 0)] //Error case (zero for errors)
         [TestCase("", 0)]

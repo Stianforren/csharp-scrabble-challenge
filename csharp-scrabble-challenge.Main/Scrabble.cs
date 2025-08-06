@@ -31,10 +31,10 @@ namespace csharp_scrabble_challenge.Main
         {
             //TODO: score calculation code goes here
             int finalScore = 0;
-            int open = 0;
-            int close = 0;
             string subString = _word;
             int _wordMultiplier = 1;
+
+            char currentOpenBracket = ' ';
 
             if (_word.Length == 0) { return finalScore; }
             if (checkLegalWord(_word))
@@ -43,29 +43,58 @@ namespace csharp_scrabble_challenge.Main
                 {
                     subString = _word.Substring(1, _word.Length - 2);
 
-                    if (_word[2] == '}') {_wordMultiplier = 1; _mulitplier = 2; }
+                    if (subString[1] == '}') 
+                    {
+                        _wordMultiplier = 1;
+                        _mulitplier = 2;
+                        currentOpenBracket = '{';
+                    }
                     else { _wordMultiplier = 2; }
                 }
                 else if (_word[0] == '[' && _word[_word.Length - 1] == ']')
-                        {
-                            subString = _word.Substring(1, _word.Length - 2);
-                            _wordMultiplier = 3;
-                        }
+                    {
+                        subString = _word.Substring(1, _word.Length - 2);
+                    if (subString[1] == ']')
+                    {
+                        _wordMultiplier = 1;
+                        _mulitplier = 3;
+                        currentOpenBracket = '[';
+                    }
+                    else { _wordMultiplier = 3; }   
+                }
 
                 foreach (char ch in subString)
                 {
-                    if (ch == '{') { _mulitplier += 1; open++; }
-                    else if(ch == '}') { if (_mulitplier > 1) { _mulitplier -= 1; } close++; }
-                    else if (ch == '[') { _mulitplier += 2; open++; }
-                    else if (ch == ']') { if (_mulitplier > 2) { _mulitplier -= 2; } close++; }
+                    //if (ch == '{') { _mulitplier += 1; open++; }
+                    //else if(ch == '}') { if (_mulitplier > 1) { _mulitplier -= 1; } close++; }
+                    //else if (ch == '[') { _mulitplier += 2; open++; }
+                    //else if (ch == ']') { if (_mulitplier > 2) { _mulitplier -= 2; } close++; }
 
+                    if (ch == '{')
+                    {
+                        if (currentOpenBracket == ' ') { _mulitplier += 1; currentOpenBracket = '{'; }
+                        else { return 0; }
+                    }
+                    else if (ch == '}')
+                    {
+                        if (currentOpenBracket == '{') { _mulitplier -= 1; currentOpenBracket = ' '; }
+                        else { return 0; }
+                    }
+                    else if (ch == '[')
+                    {
+                        if (currentOpenBracket == ' ') { _mulitplier += 2; currentOpenBracket = '['; }
+                        else { return 0; }
+                    }
+                    else if (ch == ']')
+                    {
+                        if (currentOpenBracket == ']') { _mulitplier -= 2; currentOpenBracket = ' '; }
+                        else { return 0; }
+
+                    }
                     finalScore += charScore[ch] * _mulitplier;
                 }
             }
-            if (open != close)
-            {
-                return 0;
-            }
+
             return finalScore * _wordMultiplier;
 
         }
